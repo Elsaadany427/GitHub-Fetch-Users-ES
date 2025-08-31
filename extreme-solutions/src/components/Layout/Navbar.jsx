@@ -16,7 +16,7 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-export default function Navbar() {
+export default function Navbar({ darkMode, toggleDarkMode }) {
     const location = useLocation();
     const favorites = useSelector(state => state.favorites);
 
@@ -52,6 +52,9 @@ export default function Navbar() {
                         Favorites
                     </Button>
 
+                    <IconButton color="inherit" onClick={toggleDarkMode}>
+                        {darkMode ? <LightIcon /> : <DarkIcon />}
+                    </IconButton>
                 </Box>
             </Toolbar>
         </AppBar>
