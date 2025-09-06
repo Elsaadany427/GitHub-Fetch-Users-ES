@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, cleanup } from '@testing-library/react';
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
 import useSearchUsers from '../useSearchUsers';
 
 function Harness({ query = '', page = 1, perPage = 10 }) {
@@ -18,11 +18,11 @@ function Harness({ query = '', page = 1, perPage = 10 }) {
 
 describe('useSearchUsers (server mode)', () => {
   beforeEach(() => {
-    global.fetch = jest.fn();
+    global.fetch = vi.fn();
   });
   afterEach(() => {
     cleanup();
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   test('does nothing when query is empty', async () => {

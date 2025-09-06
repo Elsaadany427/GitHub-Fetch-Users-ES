@@ -1,17 +1,17 @@
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
 import debounce from '../../utils/debounce.js';
 
 describe('debounce', () => {
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   test('delays execution and keeps last call', () => {
-    const fn = jest.fn();
+    const fn = vi.fn();
     const debounced = debounce(fn, 200);
 
     debounced('a');
@@ -20,10 +20,10 @@ describe('debounce', () => {
 
     expect(fn).not.toHaveBeenCalled();
 
-    jest.advanceTimersByTime(199);
+    vi.advanceTimersByTime(199);
     expect(fn).not.toHaveBeenCalled();
 
-    jest.advanceTimersByTime(1);
+    vi.advanceTimersByTime(1);
     expect(fn).toHaveBeenCalledTimes(1);
     expect(fn).toHaveBeenCalledWith('c');
   });

@@ -1,5 +1,5 @@
 // src/App.jsx
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider, CssBaseline } from '@mui/material';
@@ -11,22 +11,34 @@ import Home from './pages/Home';
 import Favorites from './pages/Favorites';
 
 function AppContent() {
-  const [darkMode, setDarkMode] = React.useState(() => {
+  const [darkMode, setDarkMode] = useState(() => {
     try {
       const saved = localStorage.getItem('darkMode');
       return saved ? JSON.parse(saved) === true : false;
-    } catch (_) {
+    } catch (err) {
+      console.error("Failed to read darkMode from localStorage:", err);
       return false;
     }
   });
+
   useFavoritesStorageSync();
 
   const toggleDarkMode = () => setDarkMode((v) => !v);
 
-  React.useEffect(() => {
-    try { localStorage.setItem('darkMode', JSON.stringify(darkMode)); } catch (_) { }
-    try { document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light'); } catch (_) { }
+  useEffect(() => {
+    try {
+      localStorage.setItem('darkMode', JSON.stringify(darkMode));
+    } catch (err) {
+      console.error("Failed to save darkMode:", err);
+    }
+
+    try {
+      document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+    } catch (err) {
+      console.error("Failed to update data-theme:", err);
+    }
   }, [darkMode]);
+
 
   const theme = darkMode ? darkTheme : lightTheme;
 
