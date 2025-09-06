@@ -11,6 +11,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import Pagination from '../components/Pagination';
 import CursorPager from '../components/CursorPager';
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -50,10 +51,27 @@ export default function Home() {
 
 
   return (
-    <Container sx={{ my: 3 }}>
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
-        <SearchBar onSearch={(v) => startTransition(() => setQuery(v))} />
-        <FormControl size="small" sx={{ minWidth: 140 }}>
+    <Container maxWidth="lg" sx={{ my: 3 }}>
+      <Box
+        sx={{
+          mb: 2,
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            md: 'minmax(280px, 1fr) auto auto auto',
+          },
+          columnGap: 2,
+          rowGap: 1.5,
+          alignItems: 'center',
+          width: '100%'
+        }}
+      >
+        <SearchBar
+          onSearch={(v) => startTransition(() => setQuery(v))}
+          sx={{ width: '100%' }}
+        />
+
+        <FormControl size="small" sx={{ minWidth: { xs: '100%', md: 140 } }}>
           <InputLabel id="mode-label">Data Mode</InputLabel>
           <Select
             labelId="mode-label"
@@ -66,7 +84,7 @@ export default function Home() {
           </Select>
         </FormControl>
         {mode === 'client' && (
-          <FormControl size="small" sx={{ minWidth: 160 }}>
+          <FormControl size="small" sx={{ minWidth: { xs: '100%', md: 160 } }}>
             <InputLabel id="fetch-count-label">Fetch Size</InputLabel>
             <Select
               labelId="fetch-count-label"
@@ -80,7 +98,7 @@ export default function Home() {
             </Select>
           </FormControl>
         )}
-        <FormControl size="small" sx={{ minWidth: 140 }}>
+        <FormControl size="small" sx={{ minWidth: { xs: '100%', md: 140 } }}>
           <InputLabel id="page-size-label">Page Size</InputLabel>
           <Select
             labelId="page-size-label"
@@ -95,7 +113,7 @@ export default function Home() {
             <MenuItem value={100}>100</MenuItem>
           </Select>
         </FormControl>
-      </Stack>
+      </Box>
       {mode === 'client' ? (
         <>
           {loading && <LoadingSpinner />}

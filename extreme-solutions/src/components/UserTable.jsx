@@ -12,10 +12,14 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { alpha } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { DataGrid, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { addFavorite, removeFavorite, selectFavorites } from '../store/Reducer/favoritesReducer';
 
 export default function UserTable({ users }) {
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const favorites = useSelector(selectFavorites);
 
@@ -152,64 +156,67 @@ export default function UserTable({ users }) {
 
   return (
     <Paper sx={{ mt: 2, borderRadius: 2, overflow: 'hidden', border: '1px solid', borderColor: 'divider' }}>
-      <DataGrid
-        autoHeight
-        rows={rows}
-        columns={columns}
-        getRowId={(row) => row.id}
-        hideFooter
-        rowHeight={56}
-        headerHeight={48}
-        disableRowSelectionOnClick
-        hideFooterSelectedRowCount
-        slots={{ toolbar: FilterToolbar }}
-        sx={{
-          border: 0,
-          '& .MuiDataGrid-columnHeaders': {
-            backgroundColor: (t) => (t.palette.mode === 'light' ? 'grey.50' : 'grey.900'),
-            borderBottom: '1px solid',
-            borderColor: 'divider',
-          },
-          '& .MuiDataGrid-columnHeader, & .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-columnHeader:focus-within': {
-            py: 1.25,
-            px: 2.5,
-            outline: 'none',
-            display: 'flex',
-            alignItems: 'center',
-          },
-          '& .MuiDataGrid-columnHeaderTitle': {
-            fontWeight: 700,
-            fontSize: '0.9rem',
-            letterSpacing: 0.2,
-            color: 'text.primary',
-          },
-          '& .MuiDataGrid-cell': {
-            px: 2.5,
-            pt: 1.25,
-            pb: 1.25,
-            display: 'flex',
-            alignItems: 'center',
-          },
-          '& .MuiDataGrid-cell.MuiDataGrid-cell--textLeft': {
-            pt: 1.25,
-            pb: 1.25,
-          },
-          '& .MuiDataGrid-cellContent': {
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',
-          },
-          '& .MuiDataGrid-row': {
-            borderBottom: '1px solid',
-            borderColor: 'divider',
-          },
-          '& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within': {
-            outline: 'none',
-          },
-        }}
-        rowBuffer={5}
-        columnBuffer={2}
-      />
+      <Box sx={{ width: '100%', overflowX: 'auto' }}>
+        <DataGrid
+          autoHeight
+          rows={rows}
+          columns={columns}
+          getRowId={(row) => row.id}
+          hideFooter
+          rowHeight={isXs ? 48 : 56}
+          headerHeight={isXs ? 44 : 48}
+          disableRowSelectionOnClick
+          hideFooterSelectedRowCount
+          slots={{ toolbar: FilterToolbar }}
+          sx={{
+            minWidth: 720,
+            border: 0,
+            '& .MuiDataGrid-columnHeaders': {
+              backgroundColor: (t) => (t.palette.mode === 'light' ? 'grey.50' : 'grey.900'),
+              borderBottom: '1px solid',
+              borderColor: 'divider',
+            },
+            '& .MuiDataGrid-columnHeader, & .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-columnHeader:focus-within': {
+              py: { xs: 1, sm: 1.25 },
+              px: { xs: 1.5, sm: 2.5 },
+              outline: 'none',
+              display: 'flex',
+              alignItems: 'center',
+            },
+            '& .MuiDataGrid-columnHeaderTitle': {
+              fontWeight: 700,
+              fontSize: { xs: '0.85rem', sm: '0.9rem' },
+              letterSpacing: 0.2,
+              color: 'text.primary',
+            },
+            '& .MuiDataGrid-cell': {
+              px: { xs: 1.5, sm: 2.5 },
+              pt: { xs: 1, sm: 1.25 },
+              pb: { xs: 1, sm: 1.25 },
+              display: 'flex',
+              alignItems: 'center',
+            },
+            '& .MuiDataGrid-cell.MuiDataGrid-cell--textLeft': {
+              pt: 1.25,
+              pb: 1.25,
+            },
+            '& .MuiDataGrid-cellContent': {
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+            },
+            '& .MuiDataGrid-row': {
+              borderBottom: '1px solid',
+              borderColor: 'divider',
+            },
+            '& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within': {
+              outline: 'none',
+            },
+          }}
+          rowBuffer={5}
+          columnBuffer={2}
+        />
+      </Box>
     </Paper>
   );
 }
