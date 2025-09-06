@@ -15,10 +15,12 @@ import {
 } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { selectFavorites } from '../../store/Reducer/favoritesReducer';
 
 export default function Navbar({ darkMode, toggleDarkMode }) {
     const location = useLocation();
-    const favorites = useSelector(state => state.favorites);
+    const favorites = useSelector(selectFavorites);
+    const favCount = favorites.length;
 
     return (
         <AppBar position="static" elevation={2}>
@@ -43,7 +45,7 @@ export default function Navbar({ darkMode, toggleDarkMode }) {
                         component={Link}
                         to="/favorites"
                         startIcon={
-                            <Badge badgeContent={favorites.length} color="secondary">
+                            <Badge badgeContent={favCount} color="secondary" overlap="circular">
                                 <FavoriteIcon />
                             </Badge>
                         }
