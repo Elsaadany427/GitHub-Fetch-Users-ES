@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import debounce from '../utils/debounce';
 
-export default function SearchBar({ onSearch, placeholder = 'Search users…', delay = 300 }) {
+export default function SearchBar({ onSearch, placeholder = 'Search users…', delay = 300, sx, ...props }) {
   const [value, setValue] = useState('');
 
   const debouncedSearch = useMemo(() => debounce(onSearch, delay), [onSearch, delay]);
@@ -19,6 +19,8 @@ export default function SearchBar({ onSearch, placeholder = 'Search users…', d
         debouncedSearch(v.trim());
       }}
       variant="outlined"
+      sx={sx}
+      {...props}
     />
   );
 }

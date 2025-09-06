@@ -6,6 +6,7 @@ import {
     Box,
     Badge,
     IconButton,
+    Tooltip,
 } from '@mui/material';
 import {
     Favorite as FavoriteIcon,
@@ -25,38 +26,60 @@ export default function Navbar({ darkMode, toggleDarkMode }) {
     return (
         <AppBar position="static" elevation={2}>
             <Toolbar>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     GitHub Users
                 </Typography>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Button
-                        color="inherit"
-                        component={Link}
-                        to="/"
-                        startIcon={<HomeIcon />}
-                        variant={location.pathname === '/' ? 'outlined' : 'text'}
-                    >
-                        Home
-                    </Button>
+                    {/* Full buttons on sm+ */}
+                    <Box sx={{ display: { xs: 'none', sm: 'inline-flex' }, alignItems: 'center', gap: 2 }}>
+                        <Button
+                            color="inherit"
+                            component={Link}
+                            to="/"
+                            startIcon={<HomeIcon />}
+                            size="small"
+                            variant={location.pathname === '/' ? 'outlined' : 'text'}
+                        >
+                            Home
+                        </Button>
+                        <Button
+                            color="inherit"
+                            component={Link}
+                            to="/favorites"
+                            startIcon={
+                                <Badge badgeContent={favCount} color="secondary" overlap="circular">
+                                    <FavoriteIcon />
+                                </Badge>
+                            }
+                            size="small"
+                            variant={location.pathname === '/favorites' ? 'outlined' : 'text'}
+                        >
+                            Favorites
+                        </Button>
+                    </Box>
 
-                    <Button
-                        color="inherit"
-                        component={Link}
-                        to="/favorites"
-                        startIcon={
-                            <Badge badgeContent={favCount} color="secondary" overlap="circular">
-                                <FavoriteIcon />
-                            </Badge>
-                        }
-                        variant={location.pathname === '/favorites' ? 'outlined' : 'text'}
-                    >
-                        Favorites
-                    </Button>
+                    {/* Compact icons on xs */}
+                    <Box sx={{ display: { xs: 'inline-flex', sm: 'none' }, alignItems: 'center', gap: 1 }}>
+                        <Tooltip title="Home">
+                            <IconButton color="inherit" component={Link} to="/" aria-label="Home">
+                                <HomeIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Favorites">
+                            <IconButton color="inherit" component={Link} to="/favorites" aria-label="Favorites">
+                                <Badge badgeContent={favCount} color="secondary" overlap="circular">
+                                    <FavoriteIcon />
+                                </Badge>
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
 
-                    <IconButton color="inherit" onClick={toggleDarkMode}>
-                        {darkMode ? <LightIcon /> : <DarkIcon />}
-                    </IconButton>
+                    <Tooltip title={darkMode ? 'Switch to light' : 'Switch to dark'}>
+                        <IconButton color="inherit" onClick={toggleDarkMode} aria-label="Toggle theme">
+                            {darkMode ? <LightIcon /> : <DarkIcon />}
+                        </IconButton>
+                    </Tooltip>
                 </Box>
             </Toolbar>
         </AppBar>
