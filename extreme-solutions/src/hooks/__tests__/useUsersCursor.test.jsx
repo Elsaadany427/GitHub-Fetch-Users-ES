@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
 import useUsersCursor from '../useUsersCursor';
 
 function CursorHarness({ perPage = 2 }) {
@@ -22,11 +22,11 @@ function CursorHarness({ perPage = 2 }) {
 
 describe('useUsersCursor (server mode)', () => {
   beforeEach(() => {
-    global.fetch = jest.fn();
+    global.fetch = vi.fn();
   });
   afterEach(() => {
     cleanup();
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   test('loads first page and navigates next/prev', async () => {
@@ -56,7 +56,7 @@ describe('useUsersCursor (server mode)', () => {
       expect(screen.getByTestId('hasPrev').textContent).toBe('false');
     });
 
-    // Next → loads page 2
+    // Next �+' loads page 2
     fireEvent.click(screen.getByText('next'));
     await waitFor(() => {
       expect(screen.getByTestId('page').textContent).toBe('2');
@@ -65,7 +65,7 @@ describe('useUsersCursor (server mode)', () => {
       expect(screen.getByTestId('hasPrev').textContent).toBe('true');
     });
 
-    // Prev → back to page 1
+    // Prev �+' back to page 1
     fireEvent.click(screen.getByText('prev'));
     await waitFor(() => {
       expect(screen.getByTestId('page').textContent).toBe('1');

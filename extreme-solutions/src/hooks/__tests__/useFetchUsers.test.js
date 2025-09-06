@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, cleanup } from '@testing-library/react';
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
 import useFetchUsers from '../useFetchUsers';
 
 function TestHarness({ perPage }) {
@@ -16,11 +16,11 @@ function TestHarness({ perPage }) {
 
 describe('useFetchUsers', () => {
   beforeEach(() => {
-    global.fetch = jest.fn();
+    global.fetch = vi.fn();
   });
   afterEach(() => {
     cleanup();
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   test('loads users successfully', async () => {
